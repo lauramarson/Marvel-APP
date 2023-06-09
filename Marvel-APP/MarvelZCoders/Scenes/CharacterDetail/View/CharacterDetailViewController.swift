@@ -79,21 +79,21 @@ final class CharacterDetailViewController: UIViewController {
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
     }
     
-    private func presentErrorView(with error: ErrorViewType) {
-        self.view.addSubview(errorView)
-        errorView.errorType = error
-        
-        NSLayoutConstraint.activate([
-            errorView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            errorView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            errorView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            errorView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-        ])
-        
-        errorView.button.addTarget(self, action: #selector(errorViewButtonPressed), for: .touchUpInside)
-        errorView.fadeIn()
-        
-    }
+//    private func presentErrorView(with error: ErrorViewType) {
+//        self.view.addSubview(errorView)
+//        errorView.errorType = error
+//        
+//        NSLayoutConstraint.activate([
+//            errorView.topAnchor.constraint(equalTo: self.view.topAnchor),
+//            errorView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+//            errorView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+//            errorView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+//        ])
+//        
+////        errorView.button.addTarget(self, action: #selector(errorViewButtonPressed), for: .touchUpInside)
+//        errorView.fadeIn()
+//        
+//    }
     
     @objc private func errorViewButtonPressed() {
         errorView.fadeOut()
@@ -184,12 +184,12 @@ extension CharacterDetailViewController: CharacterDetailViewModelDelegate {
     }
     
     func noInternetConnectionDelegate() {
-        let error = ErrorViewType(title: "Ocorreu um erro", message: "Por gentileza verifique se você está com a internet ativa, caso esteja, tente novamente através do botão abaixo.", buttonName: "Tentar novamente")
-        presentErrorView(with: error)
+//        let error = ErrorViewType(title: "Ocorreu um erro", message: "Por gentileza verifique se você está com a internet ativa, caso esteja, tente novamente através do botão abaixo.", buttonName: "Tentar novamente")
+//        presentErrorView(with: error)
     }
     
     func unableToFetchDataDelegate() {
-        let error = ErrorViewType(title: "Ocorreu um erro", message: "No momento, não foi possível carregar os dados. Tente novamente mais tarde.", buttonName: "Tentar novamente")
-        presentErrorView(with: error)
+//        let error = ErrorViewType(title: "Ocorreu um erro", message: "No momento, não foi possível carregar os dados. Tente novamente mais tarde.", buttonName: "Tentar novamente")
+//        presentErrorView(with: error)
     }
 }

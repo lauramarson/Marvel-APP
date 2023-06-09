@@ -10,14 +10,17 @@ import Kingfisher
 
 final class CharacterViewCell: UICollectionViewCell {
     
+    // MARK: - Properties
+    
     var character: Character? {
         didSet {
             guard let character = character else { return }
-            configCell()
             nameLabel.text = character.name
             characterImageView.kf.setImage(with: character.pictureURL)
         }
     }
+    
+    // MARK: - UI Components
     
     private lazy var characterImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
@@ -53,29 +56,34 @@ final class CharacterViewCell: UICollectionViewCell {
         return stackView
     }()
     
+    // MARK: - Reuse ID
+    
     static var reuseId: String {
         return String(describing: self)
     }
     
+    // MARK: - Initializers
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setup()
+        loadView()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+    // MARK: - ViewCode
     
-    private func setup() {
-        addViews()
-        addConstraints()
-    }
+extension CharacterViewCell: ViewCode {
     
-    private func addViews() {
+    func addSubviews() {
         self.contentView.addSubview(containerStackView)
     }
 
-    private func addConstraints() {
+    func addConstraints() {
         
         NSLayoutConstraint.activate([
             containerStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
@@ -89,7 +97,7 @@ final class CharacterViewCell: UICollectionViewCell {
         ])
     }
     
-    private func configCell() {
+    func additionalConfig() {
         self.contentView.layer.borderWidth = 1
         self.contentView.layer.borderColor = UIColor.cinzaMedio?.cgColor
         self.contentView.layer.cornerRadius = 8

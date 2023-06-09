@@ -18,9 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let marvelAPI = MarvelAPI()
         let viewModel = CharactersListViewModel(marvelAPI: marvelAPI)
         
-        let firstViewController = CharactersListViewController()
-        firstViewController.viewModel = viewModel
-        
+        let firstViewController = CharactersListViewController(viewModel: viewModel)
         let navController = UINavigationController(rootViewController: firstViewController)
         
         let window = UIWindow(windowScene: windowScene)
