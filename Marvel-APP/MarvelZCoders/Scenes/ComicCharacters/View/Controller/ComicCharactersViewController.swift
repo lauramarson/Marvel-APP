@@ -21,31 +21,6 @@ final class ComicCharactersViewController: UIViewController {
     
     var viewModel: ComicCharactersViewModel?
     
-//    override func loadView() {
-//        let customView = ComicCharactersViewScreen()
-//        customView.setupCollectionViewProtocols(delegate: self, dataSource: self)
-//        view = customView
-//    }
-    
-//    private lazy var collectionViewLayout: UICollectionViewFlowLayout = {
-//        let layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .vertical
-//        layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-//        layout.minimumLineSpacing = 20
-//        layout.minimumInteritemSpacing = 20
-//        layout.itemSize = CGSize(width: 133, height: 200)
-//        return layout
-//    }()
-//
-//    lazy var collectionView: UICollectionView = {
-//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-//        collectionView.translatesAutoresizingMaskIntoConstraints = false
-//        collectionView.dataSource = self
-//        collectionView.delegate = self
-//        collectionView.register(ComicCharacterViewCell.self, forCellWithReuseIdentifier: ComicCharacterViewCell.reuseId)
-//        return collectionView
-//    }()
-    
     // MARK: - Initializers
     
     init(viewModel: ComicCharactersViewModel) {
@@ -91,18 +66,17 @@ final class ComicCharactersViewController: UIViewController {
     }
 }
 
-// MARK: Comic Characters View Delegate
+// MARK: - Comic Characters View Delegate
 
 extension ComicCharactersViewController: ComicCharactersViewDelegate {
     func characterWasSelected(_ character: Character) {
-        let descriptionVC = CharacterDescriptionViewController()
-        
-        descriptionVC.character = character
+        let descriptionVC = CharacterDescriptionViewController(character: character)
+    
         navigationController?.pushViewController(descriptionVC, animated: true)
     }
 }
 
-// MARK: Comic Characters View Model Delegate
+// MARK: - Comic Characters View Model Delegate
 
 extension ComicCharactersViewController: ComicCharactersViewModelDelegate {
     func comicCharactersViewModelDelegate(_ viewModel: ComicCharactersViewModel, didLoadCharactersList charactersList: [Character]) {
@@ -110,13 +84,20 @@ extension ComicCharactersViewController: ComicCharactersViewModelDelegate {
     }
     
     func noInternetConnectionDelegate() {
-//        let error = ErrorViewType(title: "Ocorreu um erro", message: "Por gentileza verifique se você está com a internet ativa, caso esteja, tente novamente através do botão abaixo.", buttonName: "Tentar novamente")
-//        presentErrorView(with: error)
+        let error = ErrorViewType.noInternetConnection.getErrorViewModel { [weak self] in
+            self?.comicCharactersView.hideErrorView()
+            self?.viewModel?.loadCharacters()
+        }
+        
+        comicCharactersView.showErrorView(error)
     }
     
     func unableToFetchDataDelegate() {
-//        let error = ErrorViewType(title: "Ocorreu um erro", message: "No momento, não foi possível carregar os dados. Tente novamente mais tarde.", buttonName: "Tentar novamente")
-//        presentErrorView(with: error)
+        let error = ErrorViewType.unableToFetchData.getErrorViewModel { [weak self] in
+            self?.comicCharactersView.hideErrorView()
+            self?.viewModel?.loadCharacters()
+        }
+        
+        comicCharactersView.showErrorView(error)
     }
-    
 }
