@@ -71,8 +71,8 @@ final class CharactersListViewController: UIViewController {
 
 extension CharactersListViewController: CharactersListViewDelegate {
     func characterWasSelected(_ character: Character) {
-        let detailVC = CharacterDetailViewController()
-        detailVC.viewModel = CharacterDetailViewModel(marvelAPI: MarvelAPI(), character: character)
+        let characterDetailViewModel = CharacterDetailViewModel(marvelAPI: MarvelAPI(), character: character)
+        let detailVC = CharacterDetailViewController(viewModel: characterDetailViewModel)
         
         navigationController?.pushViewController(detailVC, animated: true)
     }

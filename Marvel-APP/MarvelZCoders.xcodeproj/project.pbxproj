@@ -52,6 +52,8 @@
 		58AFC555291D54B100CC5375 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AFC554291D54B100CC5375 /* SceneDelegate.swift */; };
 		58AFC55C291D54B400CC5375 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58AFC55B291D54B400CC5375 /* Assets.xcassets */; };
 		58AFC55F291D54B400CC5375 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58AFC55D291D54B400CC5375 /* LaunchScreen.storyboard */; };
+		A4572DE82A376F71007B31AF /* CharacterDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4572DE72A376F71007B31AF /* CharacterDetailView.swift */; };
+		A4572DEC2A378F2E007B31AF /* CharacterDetailViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4572DEB2A378F2E007B31AF /* CharacterDetailViewModelProtocol.swift */; };
 		A47977F22A31019800D0EB3F /* ViewCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47977F12A31019800D0EB3F /* ViewCode.swift */; };
 		A47977F42A31079800D0EB3F /* CharactersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47977F32A31079800D0EB3F /* CharactersListView.swift */; };
 		A47977F62A31203200D0EB3F /* CharactersListViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47977F52A31203100D0EB3F /* CharactersListViewModelProtocol.swift */; };
@@ -116,6 +118,8 @@
 		58AFC55E291D54B400CC5375 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		58AFC560291D54B400CC5375 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64E28F2AF562FD75F5718A80 /* Pods-MarvelZCoders.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarvelZCoders.release.xcconfig"; path = "Target Support Files/Pods-MarvelZCoders/Pods-MarvelZCoders.release.xcconfig"; sourceTree = "<group>"; };
+		A4572DE72A376F71007B31AF /* CharacterDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailView.swift; sourceTree = "<group>"; };
+		A4572DEB2A378F2E007B31AF /* CharacterDetailViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailViewModelProtocol.swift; sourceTree = "<group>"; };
 		A47977F12A31019800D0EB3F /* ViewCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCode.swift; sourceTree = "<group>"; };
 		A47977F32A31079800D0EB3F /* CharactersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersListView.swift; sourceTree = "<group>"; };
 		A47977F52A31203100D0EB3F /* CharactersListViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersListViewModelProtocol.swift; sourceTree = "<group>"; };
@@ -155,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				0345E7002928233100BC8440 /* CharacterDetailViewController.swift */,
+				A4572DE72A376F71007B31AF /* CharacterDetailView.swift */,
 				0345E70229294E2F00BC8440 /* Components */,
 			);
 			path = View;
@@ -173,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				0345E7082929562000BC8440 /* CharacterDetailViewModel.swift */,
+				A4572DEB2A378F2E007B31AF /* CharacterDetailViewModelProtocol.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -657,6 +663,7 @@
 				0387A2AA291D966D00E4848F /* MarvelAPI.swift in Sources */,
 				0345E7012928233100BC8440 /* CharacterDetailViewController.swift in Sources */,
 				0387A2F62922E1B600E4848F /* String+Extension.swift in Sources */,
+				A4572DE82A376F71007B31AF /* CharacterDetailView.swift in Sources */,
 				0345E711292BAA6600BC8440 /* ComicCharactersViewController.swift in Sources */,
 				0345E70429294E5200BC8440 /* ComicViewCell.swift in Sources */,
 				0345E714292BAB8200BC8440 /* ComicCharactersViewModel.swift in Sources */,
@@ -685,6 +692,7 @@
 				0345E6E72927E0FD00BC8440 /* Debounce.swift in Sources */,
 				0345E6EB292805A500BC8440 /* APIRequest.swift in Sources */,
 				0387A2B7291E7C6B00E4848F /* UIColor+Extension.swift in Sources */,
+				A4572DEC2A378F2E007B31AF /* CharacterDetailViewModelProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,8 @@ import UIKit
 
 final class ComicViewCell: UICollectionViewCell {
     
+    // MARK: - Properties
+    
     var comic: Comic? {
         didSet {
             guard let comic = comic else { return }
@@ -16,6 +18,8 @@ final class ComicViewCell: UICollectionViewCell {
             comicImageView.kf.setImage(with: comic.pictureURL)
         }
     }
+    
+    // MARK: - UI Components
     
     private lazy var comicImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
@@ -49,31 +53,34 @@ final class ComicViewCell: UICollectionViewCell {
         return stackView
     }()
     
+    // MARK: - Reuse ID
+    
     static var reuseId: String {
         return String(describing: self)
     }
     
+    // MARK: - Initializers
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setup()
+        loadView()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func setup() {
-        addViews()
-        addConstraints()
-    }
-    
-    private func addViews() {
+}
+
+// MARK: - ViewCode
+
+extension ComicViewCell: ViewCode {
+    func addSubviews() {
         self.contentView.addSubview(comicImageView)
         self.contentView.addSubview(labelStackView)
     }
 
-    private func addConstraints() {
-        
+    func addConstraints() {
         NSLayoutConstraint.activate([
             comicImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
             comicImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
