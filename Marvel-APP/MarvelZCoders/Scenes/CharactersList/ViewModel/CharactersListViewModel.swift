@@ -7,13 +7,6 @@
 
 import Foundation
 
-protocol CharactersListViewModelDelegate: AnyObject {
-    func charactersListViewModelDelegate(_ viewModel: CharactersListViewModel, didLoadCharactersList charactersList: [Character])
-    func charactersListViewModelDelegate(_ viewModel: CharactersListViewModel, didSearchForCharacters charactersList: [Character])
-    func noInternetConnectionDelegate()
-    func unableToFetchDataDelegate()
-}
-
 class CharactersListViewModel {
     private let limit = 20
     private(set) var charactersCount = 0

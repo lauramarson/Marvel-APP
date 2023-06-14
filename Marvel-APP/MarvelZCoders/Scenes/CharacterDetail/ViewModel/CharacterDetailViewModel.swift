@@ -7,12 +7,6 @@
 
 import Foundation
 
-protocol CharacterDetailViewModelDelegate: AnyObject {
-    func characterDetailViewModelDelegate(_ viewModel: CharacterDetailViewModel, didLoadComicsList comicsList: [Comic])
-    func noInternetConnectionDelegate()
-    func unableToFetchDataDelegate()
-}
-
 class CharacterDetailViewModel {
     private let limit = 20
     private(set) var comicsCount = 0

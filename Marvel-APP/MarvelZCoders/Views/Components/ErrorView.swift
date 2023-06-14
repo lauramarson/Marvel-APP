@@ -9,19 +9,23 @@ import UIKit
 
 final class ErrorView: UIView {
     
-    var errorType: ErrorViewType {
+    // MARK: - Properties
+    
+    var errorViewModel: ErrorViewModel {
         didSet {
-            titleLabel.text = errorType.title
-            messageLabel.text = errorType.message
-            button.setTitle(errorType.buttonName, for: .normal)
+            titleLabel.text = errorViewModel.title
+            messageLabel.text = errorViewModel.message
+            button.setTitle(errorViewModel.buttonName, for: .normal)
         }
     }
+    
+    // MARK: - UI Components
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.text = errorType.title
+        label.text = errorViewModel.title
         label.font = .cairo(.bold, size: 20)
         return label
     }()
@@ -30,17 +34,17 @@ final class ErrorView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.text = errorType.message
+        label.text = errorViewModel.message
         label.font = .cairo(.regular, size: 17)
         label.numberOfLines = 0
         return label
     }()
     
-    lazy var button: UIButton = {
+    private lazy var button: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font =  .cairo(.regular, size: 17)
-        button.setTitle(errorType.buttonName, for: .normal)
+        button.setTitle(errorViewModel.buttonName, for: .normal)
         button.backgroundColor = UIColor(hex: "#43BB41ff")
         button.layer.cornerRadius = 15
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 27, bottom: 0, right: 27)
@@ -48,6 +52,8 @@ final class ErrorView: UIView {
         NSLayoutConstraint.activate([
             button.heightAnchor.constraint(equalToConstant: 32)
         ])
+        
+        button.addTarget(self, action: #selector(didTap), for: .touchUpInside)
         
         return button
     }()
@@ -69,28 +75,36 @@ final class ErrorView: UIView {
         return stackView
     }()
     
+    // MARK: - Initializers
+    
     init() {
-        errorType = ErrorViewType(title: "", message: "", buttonName: "")
+        errorViewModel = ErrorViewModel(title: "", message: "", buttonName: "", action: { /* Intentionally Unimplemented */})
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        setup()
+        loadView()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setup() {
-        self.backgroundColor = .white
-        self.translatesAutoresizingMaskIntoConstraints = false
-        addViews()
-        addConstraints()
+    // MARK: - Action
+    
+    @objc
+    private func didTap() {
+        errorViewModel.action()
     }
+}
 
-    private func addViews() {
+    // MARK: - ViewCode
+    
+extension ErrorView: ViewCode {
+    
+    func addSubviews() {
         addSubview(containerStackView)
     }
     
-    private func addConstraints() {
+    func addConstraints() {
         self.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -98,5 +112,9 @@ final class ErrorView: UIView {
             containerStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             containerStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
+    }
+    
+    func additionalConfig() {
+        self.backgroundColor = .white
     }
 }

@@ -9,6 +9,8 @@ import UIKit
 
 final class CharacterHeaderView: UICollectionReusableView {
     
+    // MARK: - Properties
+    
     var character: Character? {
         didSet {
             guard let character = character else { return }
@@ -16,6 +18,8 @@ final class CharacterHeaderView: UICollectionReusableView {
             character.description == "" ? (descriptionLabel.text = "Sem descrição disponível") : (descriptionLabel.text = "\"\(character.description)\"")
         }
     }
+    
+    // MARK: - UI Components
     
     private lazy var characterImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
@@ -52,30 +56,33 @@ final class CharacterHeaderView: UICollectionReusableView {
         return stackView
     }()
     
+    // MARK: - Reuse ID
+    
     static var reuseId: String {
         return String(describing: self)
     }
     
+    // MARK: - Initializers
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setup()
+        loadView()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func setup() {
-        addViews()
-        addConstraints()
-    }
-    
-    private func addViews() {
+}
+
+// MARK: - ViewCode
+
+extension CharacterHeaderView: ViewCode {
+    func addSubviews() {
         self.addSubview(containerStackView)
     }
 
-    private func addConstraints() {
-        
+    func addConstraints() {
         NSLayoutConstraint.activate([
             characterImageView.heightAnchor.constraint(equalToConstant: 112),
             characterImageView.widthAnchor.constraint(equalTo: characterImageView.heightAnchor, multiplier: 1)
