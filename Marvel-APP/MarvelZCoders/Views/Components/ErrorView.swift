@@ -7,17 +7,7 @@
 
 import UIKit
 
-final class ErrorView: UIView {
-    
-    // MARK: - Properties
-    
-    var errorViewModel: ErrorViewModel {
-        didSet {
-            titleLabel.text = errorViewModel.title
-            messageLabel.text = errorViewModel.message
-            button.setTitle(errorViewModel.buttonName, for: .normal)
-        }
-    }
+final class ErrorView: BaseView<ErrorViewModel> {
     
     // MARK: - UI Components
     
@@ -25,7 +15,7 @@ final class ErrorView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.text = errorViewModel.title
+        label.text = model.title
         label.font = .cairo(.bold, size: 20)
         return label
     }()
@@ -34,7 +24,7 @@ final class ErrorView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.text = errorViewModel.message
+        label.text = model.message
         label.font = .cairo(.regular, size: 17)
         label.numberOfLines = 0
         return label
@@ -44,7 +34,7 @@ final class ErrorView: UIView {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font =  .cairo(.regular, size: 17)
-        button.setTitle(errorViewModel.buttonName, for: .normal)
+        button.setTitle(model.buttonName, for: .normal)
         button.backgroundColor = UIColor(hex: "#43BB41ff")
         button.layer.cornerRadius = 15
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 27, bottom: 0, right: 27)
@@ -75,37 +65,22 @@ final class ErrorView: UIView {
         return stackView
     }()
     
-    // MARK: - Initializers
-    
-    init() {
-        errorViewModel = ErrorViewModel(title: "", message: "", buttonName: "", action: { /* Intentionally Unimplemented */})
-        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        loadView()
-    }
-    
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     // MARK: - Action
     
     @objc
     private func didTap() {
-        errorViewModel.action()
+        model.action()
     }
-}
 
     // MARK: - ViewCode
     
-extension ErrorView: ViewCode {
-    
-    func addSubviews() {
+    override func addSubviews() {
+        super.addSubviews()
         addSubview(containerStackView)
     }
     
-    func addConstraints() {
-        self.translatesAutoresizingMaskIntoConstraints = false
+    override func addConstraints() {
+        super.addConstraints()
         
         NSLayoutConstraint.activate([
             containerStackView.topAnchor.constraint(equalTo: self.topAnchor),
@@ -114,7 +89,14 @@ extension ErrorView: ViewCode {
         ])
     }
     
-    func additionalConfig() {
+    override func additionalConfig() {
         self.backgroundColor = .white
+    }
+    
+    override func updateModel(model: ErrorViewModel) {
+        super.updateModel(model: model)
+        titleLabel.text = model.title
+        messageLabel.text = model.message
+        button.setTitle(model.buttonName, for: .normal)
     }
 }

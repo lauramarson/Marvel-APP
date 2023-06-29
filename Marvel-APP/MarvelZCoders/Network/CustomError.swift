@@ -1,13 +1,13 @@
 //
-//  ErrorViewType.swift
+//  CustomError.swift
 //  MarvelZCoders
 //
-//  Created by Laura Pinheiro Marson on 23/11/22.
+//  Created by Laura Pinheiro Marson on 15/06/23.
 //
 
 import Foundation
 
-enum ErrorViewType {
+enum CustomError: Error {
     case unableToFetchData
     case noInternetConnection
     
@@ -31,18 +31,13 @@ enum ErrorViewType {
     }
 }
 
-struct ErrorViewModel: BaseViewModel {
-    private(set) var title: String
-    private(set) var message: String
-    private(set) var buttonName: String
-    let action: () -> Void
-    
-    init(title: String, message: String, buttonName: String, action: @escaping () -> Void) {
-        self.title = title
-        self.message = message
-        self.buttonName = buttonName
-        self.action = action
+extension CustomError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .unableToFetchData:
+            return NSLocalizedString("Por gentileza verifique se você está com a internet ativa, caso esteja, tente novamente através do botão abaixo.", comment: "Ocorreu um erro")
+        case .noInternetConnection:
+            return NSLocalizedString("Description of invalid password", comment: "Invalid Password")
+        }
     }
-    
-    static var empty: ErrorViewModel { .init(title: "", message: "", buttonName: "", action: { }) }
 }

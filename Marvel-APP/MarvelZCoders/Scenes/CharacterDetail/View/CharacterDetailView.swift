@@ -11,7 +11,7 @@ class CharacterDetailView: UIView {
     
     // MARK: - UI Components
     
-    private lazy var errorView = ErrorView()
+    private lazy var errorView = ErrorView(model: .empty)
     
     private lazy var collectionViewLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
@@ -61,7 +61,7 @@ class CharacterDetailView: UIView {
     
     func showErrorView(_ error: ErrorViewModel) {
         addSubview(errorView)
-        errorView.errorViewModel = error
+        errorView.updateModel(model: error)
         
         NSLayoutConstraint.activate([
             errorView.topAnchor.constraint(equalTo: self.topAnchor),

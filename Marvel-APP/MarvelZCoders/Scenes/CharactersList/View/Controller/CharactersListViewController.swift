@@ -37,7 +37,6 @@ final class CharactersListViewController: UIViewController {
     // MARK: - Life Cycle
     
     override func loadView() {
-        super.loadView()
         view = charactersListView
     }
 

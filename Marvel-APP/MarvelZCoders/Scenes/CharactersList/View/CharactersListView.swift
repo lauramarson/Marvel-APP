@@ -11,7 +11,7 @@ class CharactersListView: UIView {
     
     // MARK: - UI Components
     
-    private lazy var errorView = ErrorView()
+    private lazy var errorView = ErrorView(model: .empty)
     
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -66,7 +66,7 @@ class CharactersListView: UIView {
     
     func showErrorView(_ error: ErrorViewModel) {
         addSubview(errorView)
-        errorView.errorViewModel = error
+        errorView.updateModel(model: error)
         
         NSLayoutConstraint.activate([
             errorView.topAnchor.constraint(equalTo: self.searchBar.bottomAnchor),

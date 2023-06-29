@@ -36,7 +36,6 @@ final class CharacterDetailViewController: UIViewController {
     // MARK: - Life Cycle
     
     override func loadView() {
-        super.loadView()
         view = characterDetailView
     }
     

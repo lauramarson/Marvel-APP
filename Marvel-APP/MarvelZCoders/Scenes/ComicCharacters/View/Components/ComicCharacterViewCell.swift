@@ -7,17 +7,16 @@
 
 import UIKit
 
+struct ComicCharacterModel: BaseViewModel {
+    var name: String
+    var pictureURL: URL?
+}
+
 final class ComicCharacterViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
-    var character: Character? {
-        didSet {
-            guard let character = character else { return }
-            nameLabel.text = character.name
-            characterImageView.kf.setImage(with: character.pictureURL)
-        }
-    }
+    var model: ComicCharacterModel?
     
     // MARK: - UI Components
     
@@ -75,7 +74,8 @@ final class ComicCharacterViewCell: UICollectionViewCell {
 
     // MARK: - ViewCode
 
-extension ComicCharacterViewCell: ViewCode {
+extension ComicCharacterViewCell: ViewCode, OptionalUpdatableModel {
+    
     func addSubviews() {
         self.contentView.addSubview(characterImageView)
         self.contentView.addSubview(labelStackView)
@@ -94,5 +94,11 @@ extension ComicCharacterViewCell: ViewCode {
             labelStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
             labelStackView.heightAnchor.constraint(equalTo: self.contentView.heightAnchor, multiplier: 0.13)
         ])
+    }
+    
+    func updateModel(model: ComicCharacterModel?) {
+        self.model = model
+        nameLabel.text = model?.name
+        characterImageView.kf.setImage(with: model?.pictureURL)
     }
 }

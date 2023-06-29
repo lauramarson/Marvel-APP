@@ -12,7 +12,7 @@ final class ComicCharactersViewController: UIViewController {
     // MARK: - UI Components
     
     private lazy var comicCharactersView: ComicCharactersView = {
-        let view = ComicCharactersView()
+        let view = ComicCharactersView(model: ComicCharactersModel(characters: []))
         view.delegate = self
         return view
     }()
@@ -36,7 +36,6 @@ final class ComicCharactersViewController: UIViewController {
     // MARK: - Life Cycle
     
     override func loadView() {
-        super.loadView()
         view = comicCharactersView
     }
     
@@ -80,7 +79,7 @@ extension ComicCharactersViewController: ComicCharactersViewDelegate {
 
 extension ComicCharactersViewController: ComicCharactersViewModelDelegate {
     func comicCharactersViewModelDelegate(_ viewModel: ComicCharactersViewModel, didLoadCharactersList charactersList: [Character]) {
-        comicCharactersView.loadCollectionView(with: charactersList)
+        comicCharactersView.updateModel(model: ComicCharactersModel(characters: charactersList))
     }
     
     func noInternetConnectionDelegate() {

@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol ViewCode {
+public protocol ViewCode {
     func loadView()
     func addSubviews()
     func addConstraints()
     func additionalConfig()
 }
 
-extension ViewCode {
+public extension ViewCode {
     func loadView() {
         addSubviews()
         addConstraints()

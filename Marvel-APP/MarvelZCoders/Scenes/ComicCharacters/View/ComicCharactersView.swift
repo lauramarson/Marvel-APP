@@ -7,11 +7,15 @@
 
 import UIKit
 
-class ComicCharactersView: UIView {
+struct ComicCharactersModel: BaseViewModel {
+    var characters: [Character]
+}
+
+class ComicCharactersView: BaseView<ComicCharactersModel> {
     
     // MARK: - UI Components
     
-    private lazy var errorView = ErrorView()
+    private lazy var errorView = ErrorView(model: .empty)
     
     private lazy var collectionViewLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
@@ -34,31 +38,13 @@ class ComicCharactersView: UIView {
     
     // MARK: - Properties
     
-    private var viewModels: [Character] = []
     weak var delegate: ComicCharactersViewDelegate?
-
-    // MARK: - Initializers
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        loadView()
-    }
-    
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     // MARK: - Methods
     
-    func loadCollectionView(with viewModels: [Character]) {
-        self.viewModels = viewModels
-        collectionView.reloadData()
-    }
-    
     func showErrorView(_ error: ErrorViewModel) {
         addSubview(errorView)
-        errorView.errorViewModel = error
+        errorView.updateModel(model: error)
         
         NSLayoutConstraint.activate([
             errorView.topAnchor.constraint(equalTo: self.topAnchor),
@@ -77,22 +63,24 @@ class ComicCharactersView: UIView {
         collectionView.reloadData()
     }
 
-}
-
 // MARK: - ViewCode
 
-extension ComicCharactersView: ViewCode {
-    func addSubviews() {
+    override func addSubviews() {
         addSubview(collectionView)
     }
     
-    func addConstraints() {
+    override func addConstraints() {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: self.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
+    }
+    
+    override func updateModel(model: ComicCharactersModel) {
+        super.updateModel(model: model)
+        collectionView.reloadData()
     }
 }
 
@@ -101,7 +89,7 @@ extension ComicCharactersView: ViewCode {
 extension ComicCharactersView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModels.count
+        return model.characters.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -109,7 +97,12 @@ extension ComicCharactersView: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        cell.character = viewModels[indexPath.row]
+        let character = model.characters[indexPath.row]
+        cell.updateModel(
+            model: .init(
+                name: character.name,
+                pictureURL: character.pictureURL)
+        )
         
         return cell
     }
@@ -120,7 +113,7 @@ extension ComicCharactersView: UICollectionViewDataSource {
 extension ComicCharactersView: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.characterWasSelected(viewModels[indexPath.row])
+        delegate?.characterWasSelected(model.characters[indexPath.row])
     }
 }
 
