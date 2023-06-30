@@ -92,15 +92,7 @@ extension CharactersListViewController: CharactersListViewDelegate {
 // MARK: - Characters List View Model Delegate
 
 extension CharactersListViewController: CharactersListViewModelDelegate {
-    func noInternetConnectionDelegate() {
-        let error = ErrorViewType.noInternetConnection.getErrorViewModel { [weak self] in
-            self?.charactersListView.hideErrorView()
-            self?.viewModel?.loadCharacters()
-        }
-        
-        charactersListView.showErrorView(error)
-    }
-    
+ 
     func charactersListViewModelDelegate(_ viewModel: CharactersListViewModel, didLoadCharactersList charactersList: [Character]) {
         charactersListView.loadCollectionView(with: charactersList)
     }
@@ -110,15 +102,11 @@ extension CharactersListViewController: CharactersListViewModelDelegate {
             guard let isSearching = self?.isSearching, isSearching else { return }
             
             if charactersList.isEmpty {
-                let error = ErrorViewModel(
-                    title: "Oops...",
-                    message: "Infelizmente, não encontramos personagens com esse nome.",
-                    buttonName: "Ok",
-                    action: { [weak self] in
-                        self?.isSearching = false
-                        self?.charactersListView.hideErrorView()
-                    }
-                )
+                let error = NetworkError.emptySearch.getErrorViewModel { [weak self] in
+                    self?.isSearching = false
+                    self?.charactersListView.hideErrorView()
+                }
+                
                 self?.charactersListView.showErrorView(error)
             } else {
                 self?.charactersListView.loadCollectionView(with: charactersList)
@@ -126,12 +114,12 @@ extension CharactersListViewController: CharactersListViewModelDelegate {
         }
     }
     
-    func unableToFetchDataDelegate() {
-        let error = ErrorViewType.unableToFetchData.getErrorViewModel { [weak self] in
+    func showError(_ error: NetworkError) {
+        let errorVM = error.getErrorViewModel { [weak self] in
             self?.charactersListView.hideErrorView()
             self?.viewModel?.loadCharacters()
         }
         
-        charactersListView.showErrorView(error)
+        charactersListView.showErrorView(errorVM)
     }
 }

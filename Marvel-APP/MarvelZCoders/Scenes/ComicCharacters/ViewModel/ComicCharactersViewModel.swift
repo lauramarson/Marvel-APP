@@ -41,13 +41,7 @@ final class ComicCharactersViewModel {
                 self.charactersCount += self.limit
                 
             case .failure(let error):
-                
-                if let connectionError = error as? URLError, connectionError.code == URLError.Code.notConnectedToInternet {
-                    self.delegate?.noInternetConnectionDelegate()
-                } else {
-                    self.delegate?.unableToFetchDataDelegate()
-                }
-
+                self.delegate?.showError(error)
             }
             
             self.isDataLoading = false

@@ -81,25 +81,17 @@ extension CharacterDetailViewController: CharacterDetailViewDelegate {
 // MARK: - Character Detail View Model Delegate
 
 extension CharacterDetailViewController: CharacterDetailViewModelDelegate {
+    
     func characterDetailViewModelDelegate(_ viewModel: CharacterDetailViewModel, didLoadComicsList comicsList: [Comic]) {
         characterDetailView.loadCollectionView(with: comicsList)
     }
     
-    func noInternetConnectionDelegate() {
-        let error = ErrorViewType.noInternetConnection.getErrorViewModel { [weak self] in
+    func showError(_ error: NetworkError) {
+        let errorVM = error.getErrorViewModel { [weak self] in
             self?.characterDetailView.hideErrorView()
             self?.viewModel?.loadComics()
         }
         
-        characterDetailView.showErrorView(error)
-    }
-    
-    func unableToFetchDataDelegate() {
-        let error = ErrorViewType.unableToFetchData.getErrorViewModel { [weak self] in
-            self?.characterDetailView.hideErrorView()
-            self?.viewModel?.loadComics()
-        }
-        
-        characterDetailView.showErrorView(error)
+        characterDetailView.showErrorView(errorVM)
     }
 }

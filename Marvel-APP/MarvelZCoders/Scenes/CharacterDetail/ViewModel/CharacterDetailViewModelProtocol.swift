@@ -13,6 +13,5 @@ protocol CharacterDetailViewDelegate: AnyObject {
 
 protocol CharacterDetailViewModelDelegate: AnyObject {
     func characterDetailViewModelDelegate(_ viewModel: CharacterDetailViewModel, didLoadComicsList comicsList: [Comic])
-    func noInternetConnectionDelegate()
-    func unableToFetchDataDelegate()
+    func showError(_ error: NetworkError)
 }

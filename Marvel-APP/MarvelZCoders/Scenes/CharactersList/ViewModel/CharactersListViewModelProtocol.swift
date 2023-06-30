@@ -17,6 +17,5 @@ protocol CharactersListViewDelegate: AnyObject {
 protocol CharactersListViewModelDelegate: AnyObject {
     func charactersListViewModelDelegate(_ viewModel: CharactersListViewModel, didLoadCharactersList charactersList: [Character])
     func charactersListViewModelDelegate(_ viewModel: CharactersListViewModel, didSearchForCharacters charactersList: [Character])
-    func noInternetConnectionDelegate()
-    func unableToFetchDataDelegate()
+    func showError(_ error: NetworkError)
 }

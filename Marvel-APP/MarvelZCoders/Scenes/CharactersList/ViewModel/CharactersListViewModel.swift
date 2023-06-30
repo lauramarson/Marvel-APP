@@ -43,14 +43,7 @@ class CharactersListViewModel {
                 self.charactersList.append(contentsOf: characters.results)
                 self.charactersCount += self.limit
             case .failure(let error):
-                
-                if let connectionError = error as? URLError, connectionError.code == URLError.Code.notConnectedToInternet {
-                    self.delegate?.noInternetConnectionDelegate()
-                } else {
-                    self.delegate?.unableToFetchDataDelegate()
-                }
-                
-                print(error.localizedDescription)
+                self.delegate?.showError(error)
             }
             
             self.isDataLoading = false
@@ -88,23 +81,12 @@ class CharactersListViewModel {
                 
                 guard self.searchsCompleted == self.searchCalls else { return }
                 
-                if offset > 0 {
-                    self.searchedCharacters.append(contentsOf: charactersResult)
-                } else {
-                    self.searchedCharacters = charactersResult
-                }
+                offset > 0 ? self.searchedCharacters.append(contentsOf: charactersResult) : (self.searchedCharacters = charactersResult)
                 
                 self.delegate?.charactersListViewModelDelegate(self, didSearchForCharacters: self.searchedCharacters)
                 
             case .failure(let error):
-                
-                if let connectionError = error as? URLError, connectionError.code == URLError.Code.notConnectedToInternet {
-                    self.delegate?.noInternetConnectionDelegate()
-                } else {
-                    self.delegate?.unableToFetchDataDelegate()
-                }
-                
-                print(error.localizedDescription)
+                self.delegate?.showError(error)
             }
             
             self.isDataLoading = false

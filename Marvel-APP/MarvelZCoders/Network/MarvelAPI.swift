@@ -8,21 +8,27 @@
 import Foundation
 
 protocol MarvelAPIContract {
-    func makeRequestFor<T: Decodable>(_ request: APIRequest, responseType: T.Type, completion: @escaping (Result<T, Error>) -> ())
+    func makeRequestFor<T: Decodable>(_ request: APIRequest, responseType: T.Type, completion: @escaping (Result<T, NetworkError>) -> ())
 }
 
 struct MarvelAPI: MarvelAPIContract {
     private let session = URLSession.shared
     
-    func makeRequestFor<T: Decodable>(_ request: APIRequest, responseType: T.Type = T.self, completion: @escaping (Result<T, Error>) -> ()) {
+    func makeRequestFor<T: Decodable>(_ request: APIRequest, responseType: T.Type = T.self, completion: @escaping (Result<T, NetworkError>) -> ()) {
         
         guard let url = request.url else { return }
         
         session.dataTask(with: url, completionHandler: { data, response, error in
 
             if let error = error {
+                var networkError: NetworkError = .unableToFetchData
+                
+                if let connectionError = error as? URLError, connectionError.code == URLError.Code.notConnectedToInternet {
+                    networkError = .noInternetConnection
+                }
+                
                 DispatchQueue.main.async {
-                    completion(.failure(error))
+                    completion(.failure(networkError))
                 }
             }
 
@@ -54,12 +60,12 @@ struct MarvelAPI: MarvelAPIContract {
                 }
                 
                 DispatchQueue.main.async {
-                    completion(.failure(error))
+                    completion(.failure(.unableToDecodeData))
                 }
 
             } catch {
                 DispatchQueue.main.async {
-                    completion(.failure(error))
+                    completion(.failure(.unableToDecodeData))
                 }
             }
         }).resume()
