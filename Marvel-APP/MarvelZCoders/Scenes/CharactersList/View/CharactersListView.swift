@@ -191,7 +191,8 @@ extension CharactersListView: UISearchBarDelegate {
     
     func resetSearchbar(_ searchBar: UISearchBar) {
         delegate?.isSearching = false
-        collectionView.reloadData()
+//        collectionView.reloadData()
         searchBar.resignFirstResponder()
+        delegate?.searchEnded()
     }
 }

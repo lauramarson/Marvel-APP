@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct CharactersResults: Decodable {
+struct CharactersData: Decodable {
+    var data: CharactersResponse
+}
+
+struct CharactersResponse: Decodable {
     var results: [Character]
 }
 

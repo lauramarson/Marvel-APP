@@ -71,7 +71,7 @@ final class CharactersListViewController: UIViewController {
 
 extension CharactersListViewController: CharactersListViewDelegate {
     func characterWasSelected(_ character: Character) {
-        let characterDetailViewModel = CharacterDetailViewModel(marvelAPI: MarvelAPI(), character: character)
+        let characterDetailViewModel = CharacterDetailViewModel(character: character)
         let detailVC = CharacterDetailViewController(viewModel: characterDetailViewModel)
         
         navigationController?.pushViewController(detailVC, animated: true)
@@ -86,6 +86,14 @@ extension CharactersListViewController: CharactersListViewDelegate {
     
     func searchForCharacters(startingWith text: String) {
         viewModel?.searchForCharacters(startingWith: text)
+    }
+    
+    func searchEnded() {
+        if let charactersList = viewModel?.charactersList {
+            charactersListView.loadCollectionView(with: charactersList)
+        } else {
+            viewModel?.loadCharacters()
+        }
     }
 }
 

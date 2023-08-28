@@ -12,6 +12,7 @@ protocol CharactersListViewDelegate: AnyObject {
     func characterWasSelected(_ character: Character)
     func scrollViewScrolled(offset: Int)
     func searchForCharacters(startingWith text: String)
+    func searchEnded()
 }
 
 protocol CharactersListViewModelDelegate: AnyObject {

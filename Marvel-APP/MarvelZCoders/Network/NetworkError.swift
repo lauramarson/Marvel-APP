@@ -11,6 +11,7 @@ enum NetworkError: Error {
     case unableToFetchData
     case noInternetConnection
     case unableToDecodeData
+    case invalidURL
     case emptySearch
     
     func getErrorViewModel(with action: @escaping () -> Void) -> ErrorViewModel {

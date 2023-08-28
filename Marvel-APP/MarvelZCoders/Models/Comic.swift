@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ComicsResults: Decodable {
+struct ComicsResponse: Decodable {
     var results: [Comic]
 }
 

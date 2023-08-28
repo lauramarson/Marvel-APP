@@ -17,7 +17,7 @@ struct SuccessMarvelAPI: MarvelAPIContract {
         switch requestType {
             
         case .charactersList:
-            var charactersResults = CharactersResults(results: [])
+            var charactersResults = CharactersResponse(results: [])
             var fetchedCharacters: [Character] = []
             
             for num in offset..<(offset + 20) {
@@ -28,7 +28,7 @@ struct SuccessMarvelAPI: MarvelAPIContract {
             completion(.success(charactersResults as! T))
             
         case .searchCharacters(name: let name):
-            var charactersResults = CharactersResults(results: [])
+            var charactersResults = CharactersResponse(results: [])
             var fetchedCharacters: [Character] = []
             
             for num in offset..<(offset + 20) {
@@ -39,7 +39,7 @@ struct SuccessMarvelAPI: MarvelAPIContract {
             completion(.success(charactersResults as! T))
             
         case .comicsForCharacter(id: _):
-            var comicsResults = ComicsResults(results: [])
+            var comicsResults = ComicsResponse(results: [])
             var fetchedComics: [Comic] = []
             
             for num in offset..<(offset + 20) {
@@ -50,7 +50,7 @@ struct SuccessMarvelAPI: MarvelAPIContract {
             completion(.success(comicsResults as! T))
             
         case .charactersForComic(id: _):
-            var charactersResults = CharactersResults(results: [])
+            var charactersResults = CharactersResponse(results: [])
             var fetchedCharacters: [Character] = []
             
             for num in offset..<(offset + 20) {

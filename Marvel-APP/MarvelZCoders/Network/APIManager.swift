@@ -1,25 +1,31 @@
 //
-//  MarvelAPI.swift
+//  APIManager.swift
 //  MarvelZCoders
 //
-//  Created by Laura Pinheiro Marson on 10/11/22.
+//  Created by Laura Pinheiro Marson on 31/07/23.
 //
 
 import Foundation
 
-protocol MarvelAPIContract {
-    func makeRequestFor<T: Decodable>(_ request: APIRequest, responseType: T.Type, completion: @escaping (Result<T, NetworkError>) -> ())
+protocol APIManagerContract {
+    func makeRequestWith<T: Decodable>(_ request: APIRequestProtocol, completion: @escaping (Result<T, NetworkError>) -> ())
 }
 
-struct MarvelAPI: MarvelAPIContract {
-    private let session = URLSession.shared
+class APIManager: APIManagerContract {
+    private let session: URLSession
     
-    func makeRequestFor<T: Decodable>(_ request: APIRequest, responseType: T.Type = T.self, completion: @escaping (Result<T, NetworkError>) -> ()) {
+    init(urlSession: URLSession = URLSession.shared) {
+        session = urlSession
+    }
+    
+    func makeRequestWith<T>(_ request: APIRequestProtocol, completion: @escaping (Result<T, NetworkError>) -> ()) where T : Decodable {
+        guard let urlRequest = request.createURLRequest() else {
+            completion(.failure(.invalidURL))
+            return
+        }
         
-        guard let url = request.url else { return }
-        
-        session.dataTask(with: url, completionHandler: { data, response, error in
-
+        session.dataTask(with: urlRequest) { data, response, error in
+            
             if let error = error {
                 var networkError: NetworkError = .unableToFetchData
                 
@@ -34,9 +40,9 @@ struct MarvelAPI: MarvelAPIContract {
 
             do {
                 guard let data = data else { return }
-                let json = try JSONDecoder().decode(NetworkResponse<T>.self, from: data)
+                let json = try JSONDecoder().decode(T.self, from: data)
                 DispatchQueue.main.async {
-                    completion(.success(json.data))
+                    completion(.success(json))
                 }
             } catch let error as DecodingError {
                 switch error {
@@ -68,6 +74,6 @@ struct MarvelAPI: MarvelAPIContract {
                     completion(.failure(.unableToDecodeData))
                 }
             }
-        }).resume()
+        }.resume()
     }
 }
