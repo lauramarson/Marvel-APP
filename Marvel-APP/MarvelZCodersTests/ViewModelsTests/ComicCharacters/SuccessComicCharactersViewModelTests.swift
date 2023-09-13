@@ -10,11 +10,12 @@ import XCTest
 
 final class SuccessComicCharactersViewModelTests: XCTestCase {
     
-    var successMarvelApi = SuccessMarvelAPI()
-    var viewModel: ComicCharactersViewModel?
+    var successNetworkMock: NetworkManagerProtocol?
+    var comicsService: FetchComicsService?
+    var sut: ComicCharactersViewModel?
 
     override func setUpWithError() throws {
-        successMarvelApi = SuccessMarvelAPI()
+        successNetworkMock = SuccessMarvelAPI()
         let comic = Comic(id: 9, title: "Comic 9", thumbnail: nil)
         viewModel = ComicCharactersViewModel(marvelAPI: successMarvelApi, comic: comic)
     }

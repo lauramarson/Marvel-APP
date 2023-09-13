@@ -67,10 +67,10 @@ enum MarvelRequest: APIRequestProtocol {
     
     private var defaultQueryItems: [String: String] {
         let timestamp = "\(Date().timeIntervalSince1970)"
-        let hashParam = ("\(timestamp)\(APIKey.privateKey)\(APIKey.publicKey)").md5
+        let hashParam = ("\(timestamp)\(MarvelAPIKey.privateKey)\(MarvelAPIKey.publicKey)").md5
         
         return [
-            "apikey": APIKey.publicKey,
+            "apikey": MarvelAPIKey.publicKey,
             "ts": timestamp,
             "hash": hashParam
         ]

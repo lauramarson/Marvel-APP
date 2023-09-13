@@ -15,9 +15,9 @@ protocol FetchComicsProtocol {
 }
 
 final class FetchComicsService: FetchComicsProtocol {
-    private let apiManager: APIManagerContract
+    private let apiManager: NetworkManagerProtocol
     
-    init(apiManager: APIManagerContract = APIManager()) {
+    init(apiManager: NetworkManagerProtocol = NetworkManager()) {
         self.apiManager = apiManager
     }
     

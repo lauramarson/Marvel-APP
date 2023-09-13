@@ -8,9 +8,9 @@
 import Foundation
 @testable import MarvelZCoders
 
-struct FailureMarvelAPI: MarvelAPIContract {
-    func makeRequestFor<T>(_ request: MarvelZCoders.APIRequest, responseType: T.Type, completion: @escaping (Result<T, NetworkError>) -> ()) where T : Decodable {
-        let error = NetworkError.unableToFetchData
-        completion(.failure(error))
-    }
-}
+//struct FailureMarvelAPI: MarvelAPIContract {
+//    func makeRequestFor<T>(_ request: MarvelZCoders.APIRequest, responseType: T.Type, completion: @escaping (Result<T, NetworkError>) -> ()) where T : Decodable {
+//        let error = NetworkError.unableToFetchData
+//        completion(.failure(error))
+//    }
+//}

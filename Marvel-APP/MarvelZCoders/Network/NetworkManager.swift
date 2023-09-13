@@ -1,5 +1,5 @@
 //
-//  APIManager.swift
+//  NetworkManager.swift
 //  MarvelZCoders
 //
 //  Created by Laura Pinheiro Marson on 31/07/23.
@@ -7,11 +7,11 @@
 
 import Foundation
 
-protocol APIManagerContract {
+protocol NetworkManagerProtocol {
     func makeRequestWith<T: Decodable>(_ request: APIRequestProtocol, completion: @escaping (Result<T, NetworkError>) -> ())
 }
 
-class APIManager: APIManagerContract {
+class NetworkManager: NetworkManagerProtocol {
     private let session: URLSession
     
     init(urlSession: URLSession = URLSession.shared) {
