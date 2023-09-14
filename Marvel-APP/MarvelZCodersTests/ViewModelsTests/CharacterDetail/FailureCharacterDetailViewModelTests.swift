@@ -1,30 +1,30 @@
-////
-////  FailureCharacterDetailViewModelTests.swift
-////  MarvelZCodersTests
-////
-////  Created by Laura Pinheiro Marson on 21/11/22.
-////
 //
-//import XCTest
-//@testable import MarvelZCoders
+//  FailureCharacterDetailViewModelTests.swift
+//  MarvelZCodersTests
 //
-//final class FailureCharacterDetailViewModelTests: XCTestCase {
-//    
-//    var failureMarvelApi = FailureMarvelAPI()
-//    var viewModel: CharacterDetailViewModel?
+//  Created by Laura Pinheiro Marson on 21/11/22.
 //
-//    override func setUpWithError() throws {
-//        failureMarvelApi = FailureMarvelAPI()
-//        let character = Character(id: 5, name: "Character 5", description: "Descrição", thumbnail: nil)
-//        viewModel = CharacterDetailViewModel(marvelAPI: failureMarvelApi, character: character)
-//    }
-//
-//    func testLoadComicsWithFailure() throws {
-//        let viewModel = try XCTUnwrap(viewModel)
-//        
-//        viewModel.loadComics()
-//        
-//        XCTAssertEqual(viewModel.comicsList.count, 0)
-//        XCTAssertEqual(viewModel.comicsList.count, viewModel.comicsCount)
-//    }
-//}
+
+import XCTest
+@testable import MarvelZCoders
+
+final class FailureCharacterDetailViewModelTests: XCTestCase {
+    
+    var failureMarvelApi: NetworkManagerFailureMock!
+    var comicsService: FetchComicsService!
+    var sut: CharacterDetailViewModel!
+
+    override func setUpWithError() throws {
+        failureMarvelApi = NetworkManagerFailureMock()
+        comicsService = FetchComicsService(apiManager: failureMarvelApi)
+        let character = Character(id: 5, name: "Character 5", description: "Descrição", thumbnail: nil)
+        sut = CharacterDetailViewModel(comicsService: comicsService, character: character)
+    }
+
+    func testLoadComicsWithFailure() throws {
+        sut.loadComics()
+        
+        XCTAssertEqual(sut.comicsList.count, 0)
+        XCTAssertEqual(sut.comicsList.count, sut.comicsCount)
+    }
+}
