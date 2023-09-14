@@ -9,8 +9,7 @@ import Foundation
 
 protocol ComicCharactersViewModelDelegate: AnyObject {
     func comicCharactersViewModelDelegate(_ viewModel: ComicCharactersViewModel, didLoadCharactersList charactersList: [Character])
-    func noInternetConnectionDelegate()
-    func unableToFetchDataDelegate()
+    func showError(_ error: NetworkError)
 }
 
 protocol ComicCharactersViewDelegate: AnyObject {

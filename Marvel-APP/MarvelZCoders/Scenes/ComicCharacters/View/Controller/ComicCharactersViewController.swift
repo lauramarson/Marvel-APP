@@ -83,21 +83,12 @@ extension ComicCharactersViewController: ComicCharactersViewModelDelegate {
         comicCharactersView.loadCollectionView(with: charactersList)
     }
     
-    func noInternetConnectionDelegate() {
-        let error = ErrorViewType.noInternetConnection.getErrorViewModel { [weak self] in
+    func showError(_ error: NetworkError) {
+        let errorVM = error.getErrorViewModel { [weak self] in
             self?.comicCharactersView.hideErrorView()
             self?.viewModel?.loadCharacters()
         }
         
-        comicCharactersView.showErrorView(error)
-    }
-    
-    func unableToFetchDataDelegate() {
-        let error = ErrorViewType.unableToFetchData.getErrorViewModel { [weak self] in
-            self?.comicCharactersView.hideErrorView()
-            self?.viewModel?.loadCharacters()
-        }
-        
-        comicCharactersView.showErrorView(error)
+        comicCharactersView.showErrorView(errorVM)
     }
 }

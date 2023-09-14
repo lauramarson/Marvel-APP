@@ -17,7 +17,7 @@ class CharactersListViewModel {
     
     weak var delegate: CharactersListViewModelDelegate?
     
-    private var marvelAPI: MarvelAPIContract?
+    private let charactersService: FetchCharactersProtocol
     
     private(set) var charactersList: [Character] = [] {
         didSet {
@@ -26,37 +26,27 @@ class CharactersListViewModel {
     }
     
     private(set) var searchedCharacters: [Character] = []
-    
-    init(marvelAPI: MarvelAPIContract) {
-        self.marvelAPI = marvelAPI
+
+    init(charactersService: FetchCharactersProtocol = FetchCharactersService()) {
+        self.charactersService = charactersService
     }
     
     func loadCharacters() {
         isDataLoading = true
-        let request = APIRequest(requestType: .charactersList, offset: charactersCount)
         
-        marvelAPI?.makeRequestFor(request, responseType: CharactersResults.self, completion: { [weak self] result in
+        charactersService.fetchCharactersList(offset: charactersCount) { [weak self] result in
             guard let self = self else { return }
-            
+
             switch result {
             case .success(let characters):
-                self.charactersList.append(contentsOf: characters.results)
+                self.charactersList.append(contentsOf: characters.data.results)
                 self.charactersCount += self.limit
             case .failure(let error):
-                
-                if let connectionError = error as? URLError, connectionError.code == URLError.Code.notConnectedToInternet {
-                    self.delegate?.noInternetConnectionDelegate()
-                } else {
-                    self.delegate?.unableToFetchDataDelegate()
-                }
-                
-                print(error.localizedDescription)
+                self.delegate?.showError(error)
             }
-            
+
             self.isDataLoading = false
-        })
-        
-        
+        }
     }
     
     func searchForCharacters(startingWith text: String? = nil, offset: Int = 0) {
@@ -70,44 +60,31 @@ class CharactersListViewModel {
             searchText = text.lowercased().capitalized
         }
         
-        let request = APIRequest(requestType: .searchCharacters(name: searchText), offset: offset)
-        
-        marvelAPI?.makeRequestFor(request, responseType: CharactersResults.self, completion: { [weak self] result in
+        charactersService.searchForCharacters(name: searchText, offset: offset) { [weak self] result in
             guard let self = self else { return }
-            
+
             self.searchsCompleted += 1
-            
+
             switch result {
             case .success(let characters):
-                
-                let charactersResult = characters.results
-                
+
+                let charactersResult = characters.data.results
+
                 if !charactersResult.isEmpty {
                     guard let lastResultName = charactersResult.last?.name, lastResultName.starts(with: self.searchText) else { return }
                 }
-                
+
                 guard self.searchsCompleted == self.searchCalls else { return }
-                
-                if offset > 0 {
-                    self.searchedCharacters.append(contentsOf: charactersResult)
-                } else {
-                    self.searchedCharacters = charactersResult
-                }
-                
+
+                offset > 0 ? self.searchedCharacters.append(contentsOf: charactersResult) : (self.searchedCharacters = charactersResult)
+
                 self.delegate?.charactersListViewModelDelegate(self, didSearchForCharacters: self.searchedCharacters)
-                
+
             case .failure(let error):
-                
-                if let connectionError = error as? URLError, connectionError.code == URLError.Code.notConnectedToInternet {
-                    self.delegate?.noInternetConnectionDelegate()
-                } else {
-                    self.delegate?.unableToFetchDataDelegate()
-                }
-                
-                print(error.localizedDescription)
+                self.delegate?.showError(error)
             }
-            
+
             self.isDataLoading = false
-        })
+        }
     }
 }

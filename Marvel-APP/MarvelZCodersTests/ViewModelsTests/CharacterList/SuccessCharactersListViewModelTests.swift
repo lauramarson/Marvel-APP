@@ -10,31 +10,27 @@ import XCTest
 
 final class SuccessCharactersListViewModelTests: XCTestCase {
     
-    var successMarvelApi = SuccessMarvelAPI()
-    var viewModel: CharactersListViewModel?
+    var successMarvelApi: MarvelNetworkManagerSuccessMock!
+    var charactersService: FetchCharactersService!
+    var sut: CharactersListViewModel!
 
     override func setUpWithError() throws {       
-        successMarvelApi = SuccessMarvelAPI()
-        viewModel = CharactersListViewModel(marvelAPI: successMarvelApi)
+        successMarvelApi = MarvelNetworkManagerSuccessMock()
+        charactersService = FetchCharactersService(apiManager: successMarvelApi)
+        sut = CharactersListViewModel(charactersService: charactersService)
     }
 
     func testLoadCharactersWithSuccess() throws {
+        sut.loadCharacters()
         
-        let viewModel = try XCTUnwrap(viewModel)
-        
-        viewModel.loadCharacters()
-        
-        XCTAssertEqual(viewModel.charactersList.count, 20)
-        XCTAssertEqual(viewModel.charactersList.count, viewModel.charactersCount)
+        XCTAssertEqual(sut.charactersList.count, 20)
+        XCTAssertEqual(sut.charactersList.count, sut.charactersCount)
     }
     
     func testSearchForCharactersWithSuccess() throws {
+        sut.searchForCharacters(startingWith: "wol")
         
-        let viewModel = try XCTUnwrap(viewModel)
-        
-        viewModel.searchForCharacters(startingWith: "wol")
-        
-        XCTAssertEqual(viewModel.searchedCharacters.last?.name, "Wol")
+        XCTAssertEqual(sut.searchedCharacters.last?.name, "Wol")
     }
 
 }

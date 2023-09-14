@@ -14,7 +14,7 @@ class CharacterDetailViewModel {
     
     weak var delegate: CharacterDetailViewModelDelegate?
     
-    private var marvelAPI: MarvelAPIContract?
+    private let comicsService: FetchComicsProtocol
     var character: Character?
     
     var comicsList: [Comic] = [] {
@@ -23,33 +23,27 @@ class CharacterDetailViewModel {
         }
     }
     
-    init(marvelAPI: MarvelAPIContract, character: Character) {
-        self.marvelAPI = marvelAPI
+    init(comicsService: FetchComicsProtocol = FetchComicsService(), character: Character) {
+        self.comicsService = comicsService
         self.character = character
     }
     
     func loadComics() {
         isDataLoading = true
-        let request = APIRequest(requestType: .comicsForCharacter(id: character?.id ?? 0), offset: comicsCount)
         
-        marvelAPI?.makeRequestFor(request, responseType: ComicsResults.self, completion: { [weak self] result in
+        comicsService.fetchComicsForCharacter(id: character?.id ?? 0, offset: comicsCount) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let comics):
-                self.comicsList.append(contentsOf: comics.results)
+                self.comicsList.append(contentsOf: comics.data.results)
                 self.comicsCount += self.limit
 
             case .failure(let error):
-                
-                if let connectionError = error as? URLError, connectionError.code == URLError.Code.notConnectedToInternet {
-                    self.delegate?.noInternetConnectionDelegate()
-                } else {
-                    self.delegate?.unableToFetchDataDelegate()
-                }
+                self.delegate?.showError(error)
             }
             
             self.isDataLoading = false
-        })
+        }
     }
 }

@@ -10,21 +10,21 @@ import XCTest
 
 final class FailureCharacterDetailViewModelTests: XCTestCase {
     
-    var failureMarvelApi = FailureMarvelAPI()
-    var viewModel: CharacterDetailViewModel?
+    var failureMarvelApi: NetworkManagerFailureMock!
+    var comicsService: FetchComicsService!
+    var sut: CharacterDetailViewModel!
 
     override func setUpWithError() throws {
-        failureMarvelApi = FailureMarvelAPI()
+        failureMarvelApi = NetworkManagerFailureMock()
+        comicsService = FetchComicsService(apiManager: failureMarvelApi)
         let character = Character(id: 5, name: "Character 5", description: "Descrição", thumbnail: nil)
-        viewModel = CharacterDetailViewModel(marvelAPI: failureMarvelApi, character: character)
+        sut = CharacterDetailViewModel(comicsService: comicsService, character: character)
     }
 
     func testLoadComicsWithFailure() throws {
-        let viewModel = try XCTUnwrap(viewModel)
+        sut.loadComics()
         
-        viewModel.loadComics()
-        
-        XCTAssertEqual(viewModel.comicsList.count, 0)
-        XCTAssertEqual(viewModel.comicsList.count, viewModel.comicsCount)
+        XCTAssertEqual(sut.comicsList.count, 0)
+        XCTAssertEqual(sut.comicsList.count, sut.comicsCount)
     }
 }

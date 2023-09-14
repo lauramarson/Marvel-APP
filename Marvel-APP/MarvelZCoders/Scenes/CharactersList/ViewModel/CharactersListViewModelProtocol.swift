@@ -12,11 +12,11 @@ protocol CharactersListViewDelegate: AnyObject {
     func characterWasSelected(_ character: Character)
     func scrollViewScrolled(offset: Int)
     func searchForCharacters(startingWith text: String)
+    func searchEnded()
 }
 
 protocol CharactersListViewModelDelegate: AnyObject {
     func charactersListViewModelDelegate(_ viewModel: CharactersListViewModel, didLoadCharactersList charactersList: [Character])
     func charactersListViewModelDelegate(_ viewModel: CharactersListViewModel, didSearchForCharacters charactersList: [Character])
-    func noInternetConnectionDelegate()
-    func unableToFetchDataDelegate()
+    func showError(_ error: NetworkError)
 }
