@@ -16,22 +16,26 @@ class MarvelNetworkManagerSuccessMock: NetworkManagerProtocol {
         case .charactersList(let offset):
             let fetchedCharacters = MarvelMockData.charactersList(offset: offset)
             let charactersResults = CharactersResponse(results: fetchedCharacters)
-            completion(.success(charactersResults as! T))
+            let networkResponse = NetworkResponse(data: charactersResults)
+            completion(.success(networkResponse as! T))
             
         case .searchCharacters(let name, let offset):
             let fetchedCharacters = MarvelMockData.searchCharacters(name: name, offset: offset)
             let charactersResults = CharactersResponse(results: fetchedCharacters)
-            completion(.success(charactersResults as! T))
+            let networkResponse = NetworkResponse(data: charactersResults)
+            completion(.success(networkResponse as! T))
             
         case .comicsForCharacter(let id, let offset):
             let fetchedComics = MarvelMockData.comicsForCharacter(id: id, offset: offset)
             let comicsResults = ComicsResponse(results: fetchedComics)
-            completion(.success(comicsResults as! T))
+            let networkResponse = NetworkResponse(data: comicsResults)
+            completion(.success(networkResponse as! T))
             
         case .charactersForComic(let id, let offset):
             let fetchedCharacters = MarvelMockData.charactersForComic(id: id, offset: offset)
             let charactersResults = CharactersResponse(results: fetchedCharacters)
-            completion(.success(charactersResults as! T))
+            let networkResponse = NetworkResponse(data: charactersResults)
+            completion(.success(networkResponse as! T))
         }
     }
 }
